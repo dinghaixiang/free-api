@@ -1,0 +1,60 @@
+--[getAllCourse]
+SELECT
+	teacher.teacherName,newclass.*
+FROM
+	teacher
+RIGHT JOIN (
+	SELECT
+		c.classId,c.className,c.classRoom,c.studentSize,c.startTime,
+		c.remainSize,c.classPic,t.teacherId,t.valid,c.typeCode,c.week,c.day
+	FROM
+		class c
+	LEFT JOIN teacherClass t ON c.classId = t.classId and c.valid='1'
+) newclass ON
+teacher.teacherId = newclass.teacherId
+where newclass.valid ='1'
+
+--[insertClass]
+INSERT INTO class (
+	classId,
+	className,
+	classRoom,
+	studentSize,
+	startTime,
+	remainSize,
+	classPic,
+	classIntro,
+	week,
+	day,
+	typeCode,
+	valid
+)
+VALUES
+	(
+		#classId#,
+		#className#,
+		#classRoom#,
+		#studentSize#,
+		now(),
+		#studentSize#,
+		#picName#,
+		#classIntro#,
+		#week#,
+		#day#,
+		#classType#,
+		'1'
+	);
+
+--[getAllTeacher]
+select teacherId,teacherName from teacher
+
+--[getAllClassType]
+select typeCode,typeName from courseType
+
+--[insertTeacherClass]
+insert into teacherClass(tcId,teacherId,classId,valid)
+values(#tcId#,#teacherId#,#classId#,1)
+
+--[updateCourseValid]
+update class set valid='0'
+where classId=#classId#

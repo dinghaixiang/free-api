@@ -1,0 +1,50 @@
+--[getClassDetail]
+SELECT
+	teacher.*,newclass.*
+FROM
+	teacher
+RIGHT JOIN (
+	SELECT
+		c.classId,c.className,c.classIntro,c.week,c.day,c.classRoom,c.studentSize,date_format(c.startTime,'%Y-%m-%d') 'startTime',c.remainSize,c.classPic,t.teacherId,t.valid
+	FROM
+		class c
+	LEFT JOIN teacherClass t ON c.classId = t.classId
+  and c.classId=#classId#
+) newclass ON
+teacher.teacherId = newclass.teacherId
+where newclass.valid ='1'
+
+--[orderClass]
+insert into userClass(ucId,userId,classId,valid,week,day)
+values(#ucId#,#userId#,#classId#,'1',#week#,#day#)
+
+--[findOrder]
+select count(1) 'num' from userClass where
+userId=#userId# and classId=#classId#
+and valid='1'
+
+--[findRemainSize]
+select remainSize from class
+where classId=#classId#
+
+--[updateRemainSize]
+update class set remainSize=remainSize-1
+where classId=#classId#
+
+--[findWeekDay]
+select classId,week,day from class
+where classId=#classId#
+
+--[findTime]
+select count(1) from userClass where
+week=#week# and day=#day#
+and valid='1'
+
+--[getAllOrder]
+select c.className,u.week,u.day
+from userClass u left JOIN class c
+on u.classId=c.classId
+where u.userId=#userId#
+and u.valid='1'
+order by day,week
+

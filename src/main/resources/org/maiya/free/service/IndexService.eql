@@ -1,0 +1,44 @@
+--[queryClass]
+SELECT
+	teacher.*,newclass.*
+FROM
+	teacher
+RIGHT JOIN (
+	SELECT
+		c.classId,c.className,c.classRoom,c.studentSize,c.startTime,c.remainSize,c.classPic,t.teacherId,t.valid
+	FROM
+		class c
+	LEFT JOIN teacherClass t ON c.classId = t.classId and c.valid='1'
+) newclass ON
+teacher.teacherId = newclass.teacherId
+where newclass.valid ='1'
+order by newclass.remainSize desc
+limit 20
+
+--[queryTeacher]
+select
+	t.teacherId,
+	t.teacherName,
+	t.photo,
+	t.introduction,
+	t.educationName
+from
+	teacher t
+	limit 5
+
+--[searchClass]
+SELECT
+	teacher.*,newclass.*
+FROM
+	teacher
+RIGHT JOIN (
+	SELECT
+		c.classId,c.className,c.classRoom,c.studentSize,c.startTime,c.remainSize,c.classPic,t.teacherId,t.valid
+	FROM
+		class c
+	LEFT JOIN teacherClass t ON c.classId = t.classId and c.valid='1'
+) newclass ON
+teacher.teacherId = newclass.teacherId
+where newclass.valid ='1'
+and newclass.className like concat('%',#searchKey#,'%')
+order by newclass.remainSize desc

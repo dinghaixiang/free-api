@@ -1,0 +1,29 @@
+--[getAllTeacher]
+select * from teacher
+where valid ='1'
+
+--[getAllEducation]
+select * from education
+
+--[addTeacher]
+INSERT INTO teacher (
+	teacherId,
+	teacherName,
+	educationName,
+	photo,
+	introduction,
+	valid
+)
+VALUES
+	(
+	#teacherId#,
+	#teacherName#,
+	#educationName#,
+	#photo#,
+	#introduction#,
+	'1'
+	);
+
+--[getEducationNameById]
+select educationName from education
+where educationId=#education#

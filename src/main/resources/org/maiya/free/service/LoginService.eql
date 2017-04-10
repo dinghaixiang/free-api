@@ -1,0 +1,38 @@
+--[findUser]
+select cast(userId as char(20)) userId,
+userName,
+email from
+user
+where userName=#staffCode#
+and userPwd=#password#
+
+--[insertUser]
+insert into user(userId,username,userPwd,email)values(#userId#,
+#userName#,
+#userPwd#,
+#email#)
+
+--[findUserByUserName]
+select userId,userName from
+user
+where userName=#userName#
+
+--[insertEmailRandom]
+insert into emailRandom(email,random)values(#email#,#random#)
+on DUPLICATE key update random=#random#
+
+--[updateEmail]
+update user set email=#email#
+where userId=#userId#
+
+--[findRandomByEmail]
+select random from emailRandom
+where email=#email#
+
+--[findPwd]
+select userPwd from user
+where userId=#userId#
+
+--[updatePwd]
+update user set userPwd=#newPwd#
+where userId=#userId#

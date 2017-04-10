@@ -1,0 +1,10 @@
+
+--[checkAppid]
+SELECT COUNT(APP_ID) FROM fault_app_secret
+WHERE APP_ID=##
+AND APPID_STATE='1';
+
+--[getAppSecret]
+SELECT APP_SECRET FROM fault_app_secret
+WHERE APP_ID=##
+AND APPID_STATE='1';

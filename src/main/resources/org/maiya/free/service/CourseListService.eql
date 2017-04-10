@@ -1,0 +1,22 @@
+--[getAllType]
+select typeCode,typeName from courseType
+
+--[getAllClass]
+SELECT
+	teacher.*,newclass.*
+FROM
+	teacher
+RIGHT JOIN (
+	SELECT
+	    c.classId,c.className,c.classRoom,c.studentSize,c.startTime,
+		c.remainSize,c.classPic,t.teacherId,t.valid,c.typeCode
+	FROM
+		class c
+	LEFT JOIN teacherClass t ON c.classId = t.classId
+) newclass ON
+teacher.teacherId = newclass.teacherId
+where newclass.valid ='1'
+--isNotEmpty typeCode
+and newclass.typeCode=#typeCode#
+--end
+order by newclass.remainSize desc
